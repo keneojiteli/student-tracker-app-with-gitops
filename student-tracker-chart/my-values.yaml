@@ -23,6 +23,7 @@ app:
 image:
   repository: keneojiteli/student-tracker
   tag: "latest"
+  digest: "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
   pullPolicy: IfNotPresent
 
 resources:
