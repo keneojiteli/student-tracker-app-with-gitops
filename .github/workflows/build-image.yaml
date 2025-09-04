@@ -16,7 +16,7 @@ jobs:
     build-and-deploy:
       runs-on: ubuntu-latest
       env:
-        IMAGE_REPO: ${{ secrets.DOCKERHUB_USER }}/helm-deployment-for-gitops
+        IMAGE_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/helm-deployment-for-gitops
         IMAGE_TAG: ${{ github.sha }}
         CHART_PATH: student-tracker-chart
 
@@ -38,7 +38,7 @@ jobs:
         - name: Login to DockerHub
           uses: docker/login-action@v3
           with:
-            username: ${{ secrets.DOCKERHUB_USER }}
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         # recommended to setup buildx to build multi-platform images, export cache, etc
