@@ -3,11 +3,11 @@ on:
   push:
     branches: 
       - main # push to main branch triggers this workflow
-  paths: # change(s) to these files will trigger workflow 
-    - "Dockerfile"
-    - "requirements.txt"
-    - "src/**"
-    - "student-tracker-chart"
+    paths: # change(s) to these files will trigger workflow 
+      - "Dockerfile"
+      - "requirements.txt"
+      - "src/**"
+      - "student-tracker-chart"
 
 permissions:
   contents: write
