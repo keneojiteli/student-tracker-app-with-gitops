@@ -18,15 +18,18 @@ service:
   port: 80
   targetPort: 8000
   type: NodePort
+
 app:
   name: my-app
   replicas: 2
   containerPort: 8000
+
 image:
   repository: keneojiteli/helm-deployment-for-gitops
   tag: "4e1834ed339e47b30e06591e0922e34b912b2f69"
   digest: "sha256:653205908fcd83463b785539ad6e7532efedf62b532095418a831e11593cba37"
   pullPolicy: IfNotPresent
+
 resources:
   requests:
     cpu: "100m"
@@ -34,6 +37,7 @@ resources:
   limits:
     cpu: "500m"
     memory: "512Mi"
+    
 ingress:
   name: my-app-ingress
   className: nginx
