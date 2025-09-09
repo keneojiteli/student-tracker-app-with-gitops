@@ -1,17 +1,13 @@
 appname: student-tracker-app
-
 namespace: my-app-demo
-
 secret:
   name: vault-secrets
   VAULT_ADDR: "http://135.233.112.30:8200"
   VAULT_ROLE_ID: "9055720e-3c61-aa32-90a7-492e3a9f5759"
   VAULT_SECRET_ID: "bc6162ef-da1f-013f-0d66-a1a8977c43d6"
-
   # VAULT_ADDR: "http://44.204.193.107:8200"
   # VAULT_ROLE_ID: "<as used in class or create secret with kubectl>"
   # VAULT_SECRET_ID: "<as used in class or create secret with kubectl>"
-
 service:
   name: my-app-service
   protocol: TCP
@@ -26,8 +22,8 @@ app:
 
 image:
   repository: keneojiteli/helm-deployment-for-gitops
-  tag: "4e1834ed339e47b30e06591e0922e34b912b2f69"
-  digest: "sha256:653205908fcd83463b785539ad6e7532efedf62b532095418a831e11593cba37"
+  tag: "d261d776ccc18fb4c844a4c376ed11a9c9dcfc22"
+  digest: ""
   pullPolicy: IfNotPresent
 
 resources:
