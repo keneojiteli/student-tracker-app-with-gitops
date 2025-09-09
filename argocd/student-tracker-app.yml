@@ -9,6 +9,9 @@ spec:
     repoURL: https://github.com/keneojiteli/student-tracker-app-with-gitops
     targetRevision: main
     path: student-tracker-chart
+    helm:
+      valueFiles:
+        - my-values.yaml # specifies the values file to use for the Helm chart deployment
   destination:
     server: https://kubernetes.default.svc
     namespace: my-app-demo
