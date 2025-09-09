@@ -7,7 +7,7 @@ on:
       - "Dockerfile"
       - "requirements.txt"
       - "src/**"
-      - "student-tracker-chart"
+      - "student-tracker-chart/**"
 
 permissions:
   contents: write # allows workflow to push changes to the repo
