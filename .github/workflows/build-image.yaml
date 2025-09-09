@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches: 
-      - main # push to main branch triggers this workflow
+      - main # pushing to main branch triggers this workflow
     paths: # change(s) to these files will trigger workflow 
       - "Dockerfile"
       - "requirements.txt"
@@ -10,24 +10,24 @@ on:
       - "student-tracker-chart"
 
 permissions:
-  contents: write
+  contents: write # allows workflow to push changes to the repo
 
 jobs:
     build-and-deploy:
       runs-on: ubuntu-latest
       env:
         IMAGE_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/helm-deployment-for-gitops
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ github.sha }} # use the current commit SHA as the image tag for traceability
         CHART_PATH: student-tracker-chart
 
       steps:
-        - name: Checkout code repo
+        - name: Checkout code repo # checks out code from  repo to runner's workspace
           uses: actions/checkout@v5
 
-        - name: Docker buildx setup 
+        - name: Docker buildx setup  # initializes Buildx for pipeline to use BuildKit features
           uses: docker/setup-buildx-action@v3 
 
-        - name: Docker layer cache
+        - name: Docker layer cache # sets up caching for Docker layers to speed up subsequent builds
           uses: actions/cache@v4
           with:
             path: /tmp/.buildx-cache
@@ -35,15 +35,47 @@ jobs:
             restore-keys: |
               buildx-${{ runner.os }}-
 
-        - name: Login to DockerHub
+        - name: Login to DockerHub # logs into DockerHub with creds stored as GitHub secrets
           uses: docker/login-action@v3
           with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
         # recommended to setup buildx to build multi-platform images, export cache, etc
-        - name: Build and push Docker image
-          id: build-and-push # unique identifier for this step to reference outputs later if needed
+        # - name: Build and push Docker image
+        #   id: build-and-push # unique identifier for this step to reference outputs later if needed
+        #   uses: docker/build-push-action@v6
+        #   with:
+        #     context: .
+        #     file: ./Dockerfile
+        #     push: true
+        #     tags: ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+        #     cache-from: type=local,src=/tmp/.buildx-cache
+        #     cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+        - name: Build image (without push yet)
+          uses: docker/build-push-action@v6
+          with:
+            context: .
+            file: ./Dockerfile
+            load: true   # load built image into Docker's local cache for trivy to scan 
+            tags: ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+            cache-from: type=local,src=/tmp/.buildx-cache
+            cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+        - name: Scan image with Trivy
+          uses: aquasecurity/trivy-action@0.20.0
+          with:
+            image-ref: ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+            format: 'table'
+            exit-code: '1'   # fail the job if vulnerabilities are found
+            ignore-unfixed: true
+            vuln-type: 'os,library'
+            cache-from: type=local,src=/tmp/.buildx-cache
+            cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+        - name: Push image if scan passed
+          if: success()
           uses: docker/build-push-action@v6
           with:
             context: .
@@ -53,17 +85,18 @@ jobs:
             cache-from: type=local,src=/tmp/.buildx-cache
             cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-        - name: Move new cache to old cache
+
+        - name: Move new cache to old cache # moves newly created cache to the original cache location for future builds
           run: |  
             rm -rf /tmp/.buildx-cache
             mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-        - name: Install yq for YAML processing
+        - name: Install yq for YAML processing # installs yq tool to manipulate YAML files, similar to jq
           run: |
             sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_amd64
             sudo chmod +x /usr/local/bin/yq
 
-        - name: Update Helm chart values with new image tag
+        - name: Update Helm chart values with new image tag # updates the Helm chart values file with the new image repository, tag, and digest
           env:
             IMAGE_DIGEST: ${{ steps.build-and-push.outputs.digest }}
           run: |
@@ -72,7 +105,7 @@ jobs:
             yq -i '.image.tag        = strenv(IMAGE_TAG)'  my-values.yaml
             yq -i '.image.digest     = strenv(IMAGE_DIGEST)' my-values.yaml # check in helm file
 
-        - name: Commit and push updated Helm chart values
+        - name: Commit and push updated Helm chart values # commits the updated Helm chart values file back to the repository to ensure the changes are tracked in version control
           run: |
             git config --global user.name  "github-actions"
             git config --global user.email "github-actions@users.noreply.github.com"

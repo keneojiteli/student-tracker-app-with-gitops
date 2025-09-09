@@ -23,30 +23,31 @@ spec:
         - containerPort: {{ .Values.app.containerPort }}
         env:
         - name: VAULT_ADDR
-          value: "http://44.204.193.107:8200"
+          value: "http://135.233.112.30:8200"
         - name: VAULT_ROLE_ID
-          value: "f7af58b1-5c22-7c2d-c659-0425d9ce94b2"
+          value: "9055720e-3c61-aa32-90a7-492e3a9f5759"
         - name: VAULT_SECRET_ID
-          value: "d5f736da-785b-8f5c-9258-48d5d7c43c06"
+          value: "bc6162ef-da1f-013f-0d66-a1a8977c43d6"
 
-#        env:
-#        - name: VAULT_ADDR
-#          valueFrom:
-#            secretKeyRef:
-#              name: {{ .Values.secret.name }}
-#              key: VAULT_ADDR
+        # env:
+        # - name: VAULT_ADDR
+        #   valueFrom:
+        #    secretKeyRef:
+        #      name: {{ .Values.secret.name }}
+        #      key: VAULT_ADDR
 
-#        - name: VAULT_SECRET_ID
-#          valueFrom:
-#            secretKeyRef:
-#              name: {{ .Values.secret.name }}
-#              key: VAULT_SECRET_ID
+        # - name: VAULT_SECRET_ID
+        #   valueFrom:
+        #    secretKeyRef:
+        #      name: {{ .Values.secret.name }}
+        #      key: VAULT_SECRET_ID
 
-#        - name: VAULT_ROLE_ID
-#          valueFrom:
-#            secretKeyRef:
-#              name: {{ .Values.secret.name }}
-#              key: VAULT_ROLE_ID
+        # - name: VAULT_ROLE_ID
+        #   valueFrom:
+        #    secretKeyRef:
+        #      name: {{ .Values.secret.name }}
+        #      key: VAULT_ROLE_ID
+
         resources:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
