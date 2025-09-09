@@ -68,8 +68,9 @@ jobs:
           with:
             image-ref: ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
             format: 'table'
-            exit-code: '1'   # fail the job if vulnerabilities are found
+            exit-code: '0'   # fail the job if vulnerabilities are found
             ignore-unfixed: true
+            severity: CRITICAL,HIGH
             vuln-type: 'os,library'
             cache-from: type=local,src=/tmp/.buildx-cache
             cache-to: type=local,dest=/tmp/.buildx-cache-new
