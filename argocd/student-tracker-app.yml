@@ -11,7 +11,7 @@ spec:
     path: student-tracker-chart
   destination:
     server: https://kubernetes.default.svc
-    namespace: my-app
+    namespace: my-app-demo
   syncPolicy:
     automated:
       prune: true
