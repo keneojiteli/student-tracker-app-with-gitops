@@ -28,8 +28,8 @@ app:
 
 image:
   repository: keneojiteli/helm-deployment-for-gitops
-  tag: "d261d776ccc18fb4c844a4c376ed11a9c9dcfc22"
-  digest: "sha256:eb2308e55bdb74aed052daa9a26d933df97b7ca6e1051bc80049ed7c5f002621"
+  tag: "f98e55eb619a42c27d1268c308d8f154f26e0239"
+  digest: ""
   pullPolicy: IfNotPresent
 
 resources:
