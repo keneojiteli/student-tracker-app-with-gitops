@@ -37,7 +37,7 @@ resources:
   limits:
     cpu: "500m"
     memory: "512Mi"
-    
+
 ingress:
   name: my-app-ingress
   className: nginx
