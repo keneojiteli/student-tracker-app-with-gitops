@@ -11,3 +11,16 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
 
+
+# metadata:
+#   name: {{ .Values.service.name | default (printf "%s-service" (.Values.app.name | default "student-tracker")) }}
+#   namespace: {{ .Values.namespace | default "default" }}
+# spec:
+#   selector:
+#     app: {{ .Values.app.name | default "student-tracker" }}
+#   ports:
+#     - protocol: {{ .Values.service.protocol | default "TCP" }}
+#       port: {{ .Values.service.port | default 80 }}
+#       targetPort: {{ .Values.service.targetPort | default 80 }}
+
+
