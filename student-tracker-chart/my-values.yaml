@@ -1,5 +1,6 @@
 appname: student-tracker-app
 namespace: my-app-demo
+
 secret:
   name: vault-secrets
   VAULT_ADDR: "http://135.233.112.30:8200"
@@ -8,7 +9,7 @@ secret:
   # VAULT_ADDR: "http://44.204.193.107:8200"
   # VAULT_ROLE_ID: "<as used in class or create secret with kubectl>"
   # VAULT_SECRET_ID: "<as used in class or create secret with kubectl>"
-  
+
 service:
   name: my-app-service
   protocol: TCP

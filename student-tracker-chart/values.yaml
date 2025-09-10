@@ -13,6 +13,11 @@ service:
   port: 80
   targetPort: 8000
 
+secret:
+  name: vault-secrets
+
+
+
 # # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 # replicaCount: 1
 
