@@ -2,6 +2,7 @@
 # # This is a YAML-formatted file.
 # # Declare variables to be passed into your templates.
 
+namespace: my-app-demo
 
 app:
   name: student-tracker
