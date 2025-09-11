@@ -20,7 +20,7 @@ app:
   containerPort: 8000
 image:
   repository: keneojiteli/helm-deployment-for-gitops
-  tag: "a0b4760a047c327c9d513a069d99f1b6b9fb825c"
+  tag: "8d64e23fec30dda5b840e93167d0da05116e7c74"
   digest: ""
   pullPolicy: Always
 resources:
