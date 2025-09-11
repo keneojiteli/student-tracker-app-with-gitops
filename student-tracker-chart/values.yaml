@@ -30,7 +30,7 @@ image:
   repository: keneojiteli/helm-deployment-for-gitops
   tag: "f98e55eb619a42c27d1268c308d8f154f26e0239"
   digest: ""
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 resources:
   requests:

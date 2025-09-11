@@ -22,7 +22,7 @@ image:
   repository: keneojiteli/helm-deployment-for-gitops
   tag: "9acd4c28deadfddccd1ae0c8d85abd65deb1566f"
   digest: ""
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 resources:
   requests:
     cpu: "100m"
