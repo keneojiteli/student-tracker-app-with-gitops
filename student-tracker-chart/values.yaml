@@ -9,9 +9,6 @@ secret:
   VAULT_ADDR: "http://135.233.112.30:8200"
   VAULT_ROLE_ID: "9055720e-3c61-aa32-90a7-492e3a9f5759"
   VAULT_SECRET_ID: "bc6162ef-da1f-013f-0d66-a1a8977c43d6"
-  # VAULT_ADDR: "http://44.204.193.107:8200"
-  # VAULT_ROLE_ID: "<as used in class or create secret with kubectl>"
-  # VAULT_SECRET_ID: "<as used in class or create secret with kubectl>"
 service:
   name: my-app-service
   protocol: TCP

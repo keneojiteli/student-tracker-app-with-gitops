@@ -22,4 +22,7 @@ ENV PYTHONPATH=/app/src
 EXPOSE 8000
 
 # Start app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Start app with OpenTelemetry instrumentation
+CMD ["opentelemetry-instrument", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

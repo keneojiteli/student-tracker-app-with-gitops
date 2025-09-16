@@ -29,6 +29,15 @@ spec:
         - name: VAULT_SECRET_ID
           value: "bc6162ef-da1f-013f-0d66-a1a8977c43d6"
 
+        - name: OTEL_SERVICE_NAME
+          value: "student-progress"
+        - name: OTEL_TRACES_EXPORTER
+          value: "otlp"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://tempo.monitoring.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+
         # env:
         # - name: VAULT_ADDR
         #   valueFrom:

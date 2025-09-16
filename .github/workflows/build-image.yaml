@@ -2,7 +2,8 @@ name: Build and Push Docker Image
 on:
   push:
     branches: 
-      - main # pushing to main branch triggers this workflow
+      # - main # pushing to main branch triggers this workflow
+      - monitoring
     paths: # change(s) to these files will trigger workflow 
       - "Dockerfile"
       - "requirements.txt"

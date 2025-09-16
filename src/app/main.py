@@ -4,8 +4,14 @@ from fastapi.templating import Jinja2Templates
 from app.crud import create_student, get_student_progress, update_student_progress, count_students, get_all_students
 # added -  get_all_students (in line 4 above)
 
+# NEW - Add this: for metrics
+from prometheus_fastapi_instrumentator import Instrumentator
+
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+# NEW - Add this: mount /metrics automatically
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 #added - health check endpoint
 @app.get("/health")

@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: 6.6.3
+    helm:
+      values: |
+        # run the lightweight single-binary variant instead of scalable microservices
+        deploymentMode: SingleBinary
+
+        loki:
+          auth_enabled: false # disable auth for simplicity, good for learning but not production!
+          storage:
+            type: filesystem
+          # Quick start schema (no persistence). Replace with schemaConfig later.
+          useTestSchema: true
+          # Make root FS writable inside the container
+          containerSecurityContext:
+            readOnlyRootFilesystem: false
+          # Ruler needs a writable dir
+          ruler:
+            storage:
+              type: local
+              local:
+                directory: /var/loki/rules
+
+        singleBinary:
+          replicas: 1
+          persistence:
+            enabled: false
+          # Give Loki a writable /var/loki via emptyDir
+          extraVolumes:
+            - name: loki-data
+              emptyDir: {}
+          extraVolumeMounts:
+            - name: loki-data
+              mountPath: /var/loki
+
+        # Turn OFF scalable components and chunk cache (saves resources)
+        read:
+          replicas: 0
+        write:
+          replicas: 0
+        backend:
+          replicas: 0
+        chunksCache:
+          enabled: false
+
+        # Enable gateway and promtail shipping logs to Loki
+        gateway:
+          enabled: true
+
+        promtail:  # scrapes pod logs and forwards them to Loki
+          enabled: true
+          config:
+            clients:
+              - url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

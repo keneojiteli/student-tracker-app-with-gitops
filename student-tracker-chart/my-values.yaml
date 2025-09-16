@@ -36,3 +36,6 @@ ingress:
   host: ec2-18-232-214-103.compute-1.amazonaws.com
   path: /
   pathType: Prefix
+
+serviceMonitor:
+  enabled: true
