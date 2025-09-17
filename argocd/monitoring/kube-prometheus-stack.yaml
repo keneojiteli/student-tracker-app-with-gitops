@@ -19,36 +19,36 @@ spec:
           service:
             type: ClusterIP
 
-          # add this to replace the need for extra-datasources ConfigMap
-          additionalDataSources:
-            - name: Loki
-              type: loki
-              access: proxy
-              url: http://loki-gateway.monitoring.svc.cluster.local
-              isDefault: false
+          # # add this to replace the need for extra-datasources ConfigMap
+          # additionalDataSources:
+          #   - name: Loki
+          #     type: loki
+          #     access: proxy
+          #     url: http://loki-gateway.monitoring.svc.cluster.local
+          #     isDefault: false
 
-            - name: Tempo
-              type: tempo
-              access: proxy
-              url: http://tempo.monitoring.svc.cluster.local:3200
-              jsonData:
-                tracesToLogs:
-                  datasourceUid: "Loki"
-                  spanStartTimeShift: "1h"
-                  spanEndTimeShift: "1h"
-                  filterByTraceID: true
+          #   - name: Tempo
+          #     type: tempo
+          #     access: proxy
+          #     url: http://tempo.monitoring.svc.cluster.local:3200
+          #     jsonData:
+          #       tracesToLogs:
+          #         datasourceUid: "Loki"
+          #         spanStartTimeShift: "1h"
+          #         spanEndTimeShift: "1h"
+          #         filterByTraceID: true
 
-            # - name: Prometheus
-            #   type: prometheus
-            #   access: proxy
-            #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-            #   isDefault: true
+          #   # - name: Prometheus
+          #   #   type: prometheus
+          #   #   access: proxy
+          #   #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+          #   #   isDefault: true
 
           sidecar:
             dashboards:
               enabled: true
             datasources:
-              enabled: false # 👈 disable this, we don’t need the sidecar for datasources
+              enabled: true # 👈 disable this, we don’t need the sidecar for datasources
             defaultDashboardsEnabled: true
             defaultDatasourcesEnabled: true
 
