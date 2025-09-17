@@ -23,6 +23,8 @@ spec:
               enabled: true
             datasources:
               enabled: true
+            defaultDashboardsEnabled: true
+            defaultDatasourcesEnabled: false
 
         prometheus:
           prometheusSpec:
