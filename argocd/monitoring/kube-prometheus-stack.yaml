@@ -4,13 +4,13 @@ metadata:
   name: kube-prometheus-stack
   namespace: argocd
 spec:
-  project: default # belongs to argocd's default project
+  project: default
   destination:
-    name: in-cluster # deploy to the same k8s cluster where argocd is installed
+    name: in-cluster
     namespace: monitoring
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    chart: kube-prometheus-stack # this chart contains & installs prometheus, grafana, and alertmanager
+    chart: kube-prometheus-stack
     targetRevision: 67.0.0
     helm:
       values: |
@@ -18,11 +18,37 @@ spec:
           adminPassword: admin
           service:
             type: ClusterIP
+
+          # add this to replace the need for extra-datasources ConfigMap
+          additionalDataSources:
+            - name: Loki
+              type: loki
+              access: proxy
+              url: http://loki-gateway.monitoring.svc.cluster.local
+              isDefault: false
+
+            - name: Tempo
+              type: tempo
+              access: proxy
+              url: http://tempo.monitoring.svc.cluster.local:3200
+              jsonData:
+                tracesToLogs:
+                  datasourceUid: "Loki"
+                  spanStartTimeShift: "1h"
+                  spanEndTimeShift: "1h"
+                  filterByTraceID: true
+
+            - name: Prometheus
+              type: prometheus
+              access: proxy
+              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+              isDefault: true
+
           sidecar:
             dashboards:
               enabled: true
             datasources:
-              enabled: true
+              enabled: false # 👈 disable this, we don’t need the sidecar for datasources
             defaultDashboardsEnabled: true
             defaultDatasourcesEnabled: false
 
@@ -39,41 +65,6 @@ spec:
       - CreateNamespace=true
       - PruneLast=true
       - ServerSideApply=true
-      - SkipCRDs=true   
+      - SkipCRDs=true
 
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: extra-datasources
-#   namespace: monitoring
-#   labels:
-#     grafana_datasource: "1" # enables the sidecar to pick up this configmap
-#   annotations: 
-#     k8s-sidecar-target-directory: "/etc/grafana/provisioning/datasources" # add an annotation telling grafana where to mount the file
-# data:
-#   datasources.yaml: |
-#     apiVersion: 1
-#     datasources:
-#       - name: Loki
-#         type: loki
-#         access: proxy
-#         url: http://loki-gateway.monitoring.svc.cluster.local
-#         isDefault: false
 
-#       - name: Tempo
-#         type: tempo
-#         access: proxy
-#         url: http://tempo.monitoring.svc.cluster.local:3200
-#         jsonData:
-#           tracesToLogs:
-#             datasourceUid: "Loki"
-#             spanStartTimeShift: "1h"
-#             spanEndTimeShift: "1h"
-#             filterByTraceID: true
-
-#       - name: Prometheus
-#         type: prometheus
-#         access: proxy
-#         url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-#         isDefault: true
