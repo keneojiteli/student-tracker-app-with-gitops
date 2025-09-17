@@ -50,7 +50,7 @@ spec:
             datasources:
               enabled: false # 👈 disable this, we don’t need the sidecar for datasources
             defaultDashboardsEnabled: true
-            defaultDatasourcesEnabled: false
+            defaultDatasourcesEnabled: true
 
         prometheus:
           prometheusSpec:
