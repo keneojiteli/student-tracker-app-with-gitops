@@ -13,6 +13,8 @@ data:
         type: loki
         access: proxy
         url: http://loki-gateway.monitoring.svc.cluster.local
+        isDefault: false
+
       - name: Tempo
         type: tempo
         access: proxy
@@ -23,3 +25,9 @@ data:
             spanStartTimeShift: "1h"
             spanEndTimeShift: "1h"
             filterByTraceID: true
+
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        isDefault: true
