@@ -24,24 +24,6 @@ spec:
             datasources:
               enabled: true
 
-          datasources:
-            datasources.yaml:
-              apiVersion: 1
-              datasources:
-                - name: Loki
-                  type: loki
-                  access: proxy
-                  url: http://loki-gateway.monitoring.svc.cluster.local
-                - name: Tempo
-                  type: tempo
-                  access: proxy
-                  url: http://tempo.monitoring.svc.cluster.local:3200
-                - name: Prometheus
-                  type: prometheus
-                  access: proxy
-                  url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-                  isDefault: true
-
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
@@ -56,3 +38,40 @@ spec:
       - PruneLast=true
       - ServerSideApply=true
       - SkipCRDs=true   
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: extra-datasources
+  namespace: monitoring
+  labels:
+    grafana_datasource: "1" # enables the sidecar to pick up this configmap
+  annotations: 
+    k8s-sidecar-target-directory: "/etc/grafana/provisioning/datasources" # add an annotation telling grafana where to mount the file
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki-gateway.monitoring.svc.cluster.local
+        isDefault: false
+
+      - name: Tempo
+        type: tempo
+        access: proxy
+        url: http://tempo.monitoring.svc.cluster.local:3200
+        jsonData:
+          tracesToLogs:
+            datasourceUid: "Loki"
+            spanStartTimeShift: "1h"
+            spanEndTimeShift: "1h"
+            filterByTraceID: true
+
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        isDefault: true
