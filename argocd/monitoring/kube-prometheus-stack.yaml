@@ -38,11 +38,11 @@ spec:
                   spanEndTimeShift: "1h"
                   filterByTraceID: true
 
-            - name: Prometheus
-              type: prometheus
-              access: proxy
-              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-              isDefault: true
+            # - name: Prometheus
+            #   type: prometheus
+            #   access: proxy
+            #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+            #   isDefault: true
 
           sidecar:
             dashboards:
