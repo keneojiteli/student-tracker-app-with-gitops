@@ -8,7 +8,7 @@ metadata:
   annotations: 
     k8s-sidecar-target-directory: "/etc/grafana/provisioning/datasources" # add an annotation telling grafana where to mount the file
 data:
-  datasource.yaml: |
+  datasources.yaml: |
     apiVersion: 1
     datasources:
       - name: Loki
