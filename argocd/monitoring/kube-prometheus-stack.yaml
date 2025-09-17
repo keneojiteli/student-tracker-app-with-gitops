@@ -23,10 +23,30 @@ spec:
               enabled: true
             datasources:
               enabled: true
+
+          datasources:
+            datasources.yaml:
+              apiVersion: 1
+              datasources:
+                - name: Loki
+                  type: loki
+                  access: proxy
+                  url: http://loki-gateway.monitoring.svc.cluster.local
+                - name: Tempo
+                  type: tempo
+                  access: proxy
+                  url: http://tempo.monitoring.svc.cluster.local:3200
+                - name: Prometheus
+                  type: prometheus
+                  access: proxy
+                  url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+                  isDefault: true
+
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
             podMonitorSelectorNilUsesHelmValues: false
+  
   syncPolicy:
     automated:
       prune: true
