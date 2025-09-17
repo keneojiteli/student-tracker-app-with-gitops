@@ -5,6 +5,8 @@ metadata:
   namespace: monitoring
   labels:
     grafana_datasource: "1" # enables the sidecar to pick up this configmap
+  annotations: 
+    k8s-sidecar-target-directory: "/etc/grafana/provisioning/datasources" # add an annotation telling grafana where to mount the file
 data:
   datasources.yaml: |
     apiVersion: 1
