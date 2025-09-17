@@ -20,7 +20,8 @@ data:
       - name: Tempo
         type: tempo
         access: proxy
-        url: http://tempo.monitoring.svc.cluster.local:3100  
+        url: http://kube-prometheus-stack-tempo:3100
+        # url: http://tempo.monitoring.svc.cluster.local:3100  
   
 
 
