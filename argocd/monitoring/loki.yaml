@@ -2,12 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: loki
-  namespace: argocd
+  namespace: argocd # where argocd tracks workload/resource
 spec:
   project: default
   destination:
     name: in-cluster
-    namespace: monitoring
+    namespace: monitoring # exact namespace where workloads gets installed
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
