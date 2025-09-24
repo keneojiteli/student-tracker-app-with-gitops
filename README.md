@@ -87,4 +87,7 @@ student-tracker-app-with-gitops-and-monitoring/
 - Access in your browser: `http://<your-VM-public-IP>:3000`
 - Get the initial admin password: `kubectl -n monitoring get secret <secret_name> -o jsonpath="{.data.admin-password}" | base64 -d; echo`
   - Username: admin
-  - Password: admin or output from the command above 
+  - Password: admin or output from the command above
+ 
+## Project Walkthrough
+Read on [Dev.to](https://dev.to/keneojiteli/building-and-deploying-a-cloud-native-fastapi-student-tracker-app-with-mongodb-kubernetes-and-1m8) and [Hashnode](https://keneojiteli.hashnode.dev/full-stack-devops-project-deploying-a-fastapi-and-mongodb-app-with-docker-kubernetes-gitops-and-observability)
